@@ -58,14 +58,15 @@ fun! VbGetIndent(lnum)
   endif
 
   " Add
-  if previous_line =~? '^\s*\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\|ReadOnly\|WriteOnly\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Enum\)\>'
+  if previous_line =~? '^\s*\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\|ReadOnly\|WriteOnly\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Custom Event\|Enum\)\>'
+      \ || previous_line =~? '^\s*\<\(AddHandler\|RemoveHandler\|RaiseEvent\)\s*('
     let ind = ind + &sw
     if pp_line =~? '>\s\+_$'
       let ind = ind + &sw
     endif
   elseif previous_line =~? '^\s*<[A-Z]' && previous_line =~? '>\s\+\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|ReadOnly\|WriteOnly\|Shadows\|Shared\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Enum\)\>'
     let ind = ind + &sw
-  elseif previous_line =~? '^\s*\<\(Select\|Case\|Default\|Else\|ElseIf\|Do\|For\|While\|With\|Try\|Catch\|Finally\)\>'
+  elseif previous_line =~? '^\s*\<\(Select\|Case\|Default\|Else\|ElseIf\|Do\|For\|While\|With\|SyncLock\|Using\|Try\|Catch\|Finally\)\>'
     let ind = ind + &sw
   elseif previous_line =~? '\<Then$'
     let ind = ind + &sw
@@ -85,7 +86,7 @@ fun! VbGetIndent(lnum)
     endif
   elseif this_line =~? '^\s*\<\(Catch\|End\|Else\|ElseIf\|Until\|Loop\|Next\)\>'
     let ind = ind - &sw
-  elseif this_line =~? '^\s*\<\(Case\|Default\)\>'
+  elseif this_line =~? '^\s*\<\(Case\)\>'
     if previous_line !~? '^\s*\<Select\>'
       let ind = ind - &sw
     endif
