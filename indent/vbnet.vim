@@ -67,7 +67,7 @@ fun! VbGetIndent(lnum)
     let ind = ind + &sw
   elseif previous_line =~? '^\s*\<\(Select\|Case\|Default\|Else\|ElseIf\|Do\|For\|While\|With\|Try\|Catch\|Finally\)\>'
     let ind = ind + &sw
-  elseif previous_line =~? '^\s*\<If\>.*Then$'
+  elseif previous_line =~? '\<Then$'
     let ind = ind + &sw
   endif
 
