@@ -1,0 +1,9 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1103
+
+(silently) Modified from indent/vb.vim
+
+There may still be some bugs, I haven't tested all syntax...
+
+TODO:
+
+- Add support for multi-line "If" without "Then"
