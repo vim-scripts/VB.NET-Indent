@@ -45,21 +45,25 @@ fun! VbGetIndent(lnum)
     return 0
   endif
 
-  " If previous_line is an attribute
-  if previous_line =~? '^\s*<' && previous_line =~? '>\s\+_$'
-    " nothing
-  elseif previous_line =~? '_$'
+  if previous_line =~? '\s_$'
     let ind = ind + &sw
   endif
 
-  if pp_line =~? '^\s*<' && pp_line =~? '>\s\+_$'
-    " nothing
-  elseif pp_line =~? '_$'
+  if pp_line =~? '\s_$'
+    let ind = ind - &sw
+  endif
+
+  if previous_line =~? '>\s\+_$'
     let ind = ind - &sw
   endif
 
   " Add
-  if previous_line =~? '^\s*\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\)\s\+\)*\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Enum\)\s'
+  if previous_line =~? '^\s*\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Enum\)\>'
+    let ind = ind + &sw
+    if pp_line =~? '>\s\+_$'
+      let ind = ind + &sw
+    endif
+  elseif previous_line =~? '^\s*<[A-Z]' && previous_line =~? '>\s\+\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Enum\)\>'
     let ind = ind + &sw
   elseif previous_line =~? '^\s*\<\(Select\|Case\|Default\|Else\|ElseIf\|Do\|For\|While\|With\|Try\|Catch\|Finally\)\>'
     let ind = ind + &sw
