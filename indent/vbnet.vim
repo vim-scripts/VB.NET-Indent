@@ -45,6 +45,19 @@ fun! VbGetIndent(lnum)
     return 0
   endif
 
+  " If previous_line is an attribute
+  if previous_line =~? '^\s*<' && previous_line =~? '>\s\+_$'
+    " nothing
+  elseif previous_line =~? '_$'
+    let ind = ind + &sw
+  endif
+
+  if pp_line =~? '^\s*<' && pp_line =~? '>\s\+_$'
+    " nothing
+  elseif pp_line =~? '_$'
+    let ind = ind - &sw
+  endif
+
   " Add
   if previous_line =~? '^\s*\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\)\s\+\)*\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Enum\)\s'
     let ind = ind + &sw
@@ -52,10 +65,6 @@ fun! VbGetIndent(lnum)
     let ind = ind + &sw
   elseif previous_line =~? '^\s*\<If\>.*Then$'
     let ind = ind + &sw
-  elseif previous_line =~? '_$'
-    let ind = ind + &sw
-  elseif pp_line =~? '_$'
-    let ind = ind - &sw
   endif
 
   " Subtract
@@ -70,7 +79,7 @@ fun! VbGetIndent(lnum)
       " end select
       let ind = ind - &sw
     endif
-  elseif this_line =~? '^\s*\<\(End\|Else\|Until\|Loop\|Next\)\>'
+  elseif this_line =~? '^\s*\<\(End\|Else\|ElseIf\|Until\|Loop\|Next\)\>'
     let ind = ind - &sw
   elseif this_line =~? '^\s*\<\(Case\|Default\)\>'
     if previous_line !~? '^\s*\<Select\>'
