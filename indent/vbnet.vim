@@ -7,7 +7,7 @@ let b:did_indent = 1
 
 setlocal indentexpr=VbGetIndent(v:lnum)
 setlocal indentkeys&
-setlocal indentkeys+==~default,=~else,=~elseif,=~end,=~case,=~next,=~select,~=loop,<:>
+setlocal indentkeys+==~catch,~default,=~else,=~elseif,=~end,=~case,=~next,=~select,~=loop,<:>
 
 " Only define the function once.
 if exists("*VbGetIndent")
@@ -58,12 +58,12 @@ fun! VbGetIndent(lnum)
   endif
 
   " Add
-  if previous_line =~? '^\s*\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Enum\)\>'
+  if previous_line =~? '^\s*\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\|ReadOnly\|WriteOnly\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Enum\)\>'
     let ind = ind + &sw
     if pp_line =~? '>\s\+_$'
       let ind = ind + &sw
     endif
-  elseif previous_line =~? '^\s*<[A-Z]' && previous_line =~? '>\s\+\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|Shadows\|Shared\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Enum\)\>'
+  elseif previous_line =~? '^\s*<[A-Z]' && previous_line =~? '>\s\+\(\(Public\|Protected\|Protected Friend\|Private\|Friend\|Overrides\|Overridable\|Overloads\|NotOverridable\|MustOverride\|ReadOnly\|WriteOnly\|Shadows\|Shared\)\s\+\)*\<\(Function\|Sub\|Class\|Module\|Namespace\|Property\|Get\|Set\|Enum\)\>'
     let ind = ind + &sw
   elseif previous_line =~? '^\s*\<\(Select\|Case\|Default\|Else\|ElseIf\|Do\|For\|While\|With\|Try\|Catch\|Finally\)\>'
     let ind = ind + &sw
@@ -83,7 +83,7 @@ fun! VbGetIndent(lnum)
       " end select
       let ind = ind - &sw
     endif
-  elseif this_line =~? '^\s*\<\(End\|Else\|ElseIf\|Until\|Loop\|Next\)\>'
+  elseif this_line =~? '^\s*\<\(Catch\|End\|Else\|ElseIf\|Until\|Loop\|Next\)\>'
     let ind = ind - &sw
   elseif this_line =~? '^\s*\<\(Case\|Default\)\>'
     if previous_line !~? '^\s*\<Select\>'
